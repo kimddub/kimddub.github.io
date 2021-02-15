@@ -1,6 +1,7 @@
 ---
 layout: default
 title: eGovFramework
+parent: BLOG
 nav_order: 1
 has_children: true
 permalink: /docs/blog/eGovFrame
