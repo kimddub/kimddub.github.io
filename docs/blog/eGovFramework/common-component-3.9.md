@@ -22,5 +22,3 @@ date: 2021-02-15 23:45
 ## 공통컴포넌트(all-in-one) 배포
 
 ## DB 세팅
-
-{% endhighlight %}
