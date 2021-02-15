@@ -6,6 +6,5 @@ has_children: true
 permalink: /docs/blog
 ---
 
-# BLOG
-Today I learned, 
+# Blog
 {: .fs-6 .fw-300 }
