@@ -1,9 +1,9 @@
 ---
 layout: default
 title: 표준프레임워크 공통컴포넌트(eGovFrame all-in-one) 3.9 배포
-grand_parent: eGovFramework
-parent: 환경세팅
-permalink: /docs/blog/eGovFramework/env-set/common-component-3.9
+grand_parent: BLOG
+parent: eGovFramework
+permalink: /docs/blog/eGovFramework/common-component-3.9
 date: 2021-02-15 23:45
 ---
 
