@@ -4,7 +4,7 @@ title: eGovFramework
 parent: BLOG
 nav_order: 1
 has_children: true
-permalink: /docs/blog/eGovFrame
+permalink: /docs/blog/eGovFramework
 ---
 
 # 전자정부 표준프레임워크(eGovFramework)
