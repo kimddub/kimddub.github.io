@@ -1,7 +1,7 @@
 ---
 layout: default
-title: BLOG
-nav_order: 2
+title: Blog
+nav_order: 1
 has_children: true
 permalink: /docs/blog
 ---
