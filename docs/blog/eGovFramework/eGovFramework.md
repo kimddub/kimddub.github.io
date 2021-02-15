@@ -3,6 +3,7 @@ layout: default
 title: eGovFramework
 parent: Blog
 has_children: true
+permalink: /docs/blog/eGovFramework
 nav_order: 1
 ---
 
