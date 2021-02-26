@@ -37,7 +37,7 @@ DB 서버 이중화의 경우 로컬 DB의 변경내용을 원격 DB에 복제�
 
 
 *참고 : <https://12bme.tistory.com/322>*
-
+ 
 - - - 
 
 ### Kafka
@@ -49,6 +49,15 @@ DB 서버 이중화의 경우 로컬 DB의 변경내용을 원격 DB에 복제�
     Observer와 Subject가 서로를 인지하고 접근하는 Observer 패턴과 달리, Publisher와 Subscriber가 서로를 전혀 모른채 메시지 Broker(Queue)를 통해 접근한다.
 
 - 설치방법
+    - 다운로드 https://kafka.apache.org/downloads
+    - 설치 경로에서 명령어 실행
+        $> bin/zookeeper-server-start.sh config/zookeeper.properties
+
+    *참고 : <https://alphahackerhan.tistory.com/11>*
+
+
+- 사용방법
+    *참고 : <https://dadk.tistory.com/5>*
 
 
 - - -
