@@ -1,0 +1,401 @@
+전자정부표준프레임워크 all-in-one 3.9 기능분석
+===========================================
+
+
+# 회의실
+*로그인 필터, 유저권한유틸 등의 단계 생략
+
+## 870.회의실 관리
+EgovMtgPlaceManageController
+    EgovMtgPlaceManageServiceImpl
+        mtgPlaceManageDAO.selectMtgPlaceManageList
+        mtgPlaceManageDAO.insertMtgPlaceManage
+
+EgovNtwrkSvcMntrngController
+    EgovNtwrkSvcMntrngServiceImpl
+        NtwrkSvcMntrngDAO.selectNtwrkSvcMntrngList  
+        NtwrkSvcMntrngDAO.selectNtwrkSvcMntrngListCnt
+
+    1. 목록 조회
+    ```
+    # queryId = mtgPlaceManageDAO.selectMtgPlaceManageList
+    SELECT @RNUM:=@RNUM+1 AS rowCount 
+        , MTGRUM_ID AS mtgPlaceId 
+        , MTGRUM_NM AS mtgPlaceNm 
+        , OPN_BEGIN_TM AS opnBeginTm 
+        , OPN_END_TM AS opnEndTm 
+        , ACEPTNC_POSBL_NMPR AS aceptncPosblNmpr 
+        , LC_SE AS lcSe 
+        , LC_DETAIL AS lcDetail 
+        , FRST_REGISTER_ID AS frstRegisterId
+        , FRST_REGIST_PNTTM AS FRST_REGISTER_PNTTM
+        , LAST_UPDUSR_ID AS lastUpdusrId 
+        , LAST_UPDT_PNTTM AS lastUpdusrPnttm 
+        , (
+            select code_nm 
+            from COMTCCMMNDETAILCODE 
+            where code_id ='COM070' 
+                and code = A.LC_SE
+            ) as mtgPlaceTemp3 
+    FROM (select @RNUM:=0) R
+        , COMTNMTGPLACEMANAGE A
+    WHERE 1=1 ORDER BY FRST_REGIST_PNTTM DESC LIMIT 10 OFFSET 0 
+
+    # queryId = mtgPlaceManageDAO.selectMtgPlaceManageListTotCnt
+    SELECT COUNT(*) totcnt FROM COMTNMTGPLACEMANAGE WHERE 1=1
+    ```
+
+    2. 회의실 상세
+    ```
+    # queryId = NtwrkSvcMntrngDAO.selectNtwrkSvcMntrngList
+    SELECT A.SYS_IP, A.SYS_PORT, A.SYS_NM, B.CODE_NM MNTRNG_STTUS, A.MNGR_NM, A.MNGR_EMAIL_ADRES 
+FROM COMTNNTWRKSVCMNTRNG A LEFT OUTER JOIN COMTCCMMNDETAILCODE B ON B.CODE_ID = 'COM046' AND 
+A.MNTRNG_STTUS = B.CODE WHERE 1 = 1 AND binary(A.SYS_NM) LIKE CONCAT('%', '', '%') ORDER BY 
+A.FRST_REGIST_PNTTM DESC LIMIT 10000 OFFSET 0 
+
+    # queryId = NtwrkSvcMntrngDAO.selectNtwrkSvcMntrngListCnt
+    SELECT COUNT(A.SYS_IP) as cnt FROM COMTNNTWRKSVCMNTRNG A LEFT OUTER JOIN COMTCCMMNDETAILCODE 
+B ON B.CODE_ID = 'COM046' AND A.MNTRNG_STTUS = B.CODE WHERE 1 = 1 AND binary(A.SYS_NM) LIKE 
+CONCAT('%', '', '%') 
+    ```
+
+    3. 회의실 검색
+    
+    ```
+    # queryId = mtgPlaceManageDAO.selectMtgPlaceManageList
+    SELECT @RNUM:=@RNUM+1 AS rowCount , MTGRUM_ID AS mtgPlaceId , MTGRUM_NM AS mtgPlaceNm , OPN_BEGIN_TM 
+AS opnBeginTm , OPN_END_TM AS opnEndTm , ACEPTNC_POSBL_NMPR AS aceptncPosblNmpr , LC_SE AS 
+lcSe , LC_DETAIL AS lcDetail , FRST_REGISTER_ID AS frstRegisterId, FRST_REGIST_PNTTM AS FRST_REGISTER_PNTTM, 
+LAST_UPDUSR_ID AS lastUpdusrId , LAST_UPDT_PNTTM AS lastUpdusrPnttm , (select code_nm from 
+COMTCCMMNDETAILCODE where code_id ='COM070' and code = A.LC_SE) as mtgPlaceTemp3 FROM (select 
+@RNUM:=0) R, COMTNMTGPLACEMANAGE A WHERE 1=1 ORDER BY FRST_REGIST_PNTTM DESC LIMIT 10 OFFSET 
+0 
+
+    # queryId = mtgPlaceManageDAO.selectMtgPlaceManageListTotCnt
+    SELECT COUNT(*) totcnt FROM COMTNMTGPLACEMANAGE WHERE 1=1 
+    ```
+    
+    4. 회의실 등록
+    
+    ```
+    # queryId = mtgPlaceManageDAO.insertMtgPlaceManage
+    INSERT INTO COMTNMTGPLACEMANAGE (MTGRUM_ID , MTGRUM_NM , OPN_BEGIN_TM , OPN_END_TM , ACEPTNC_POSBL_NMPR 
+, LC_SE , LC_DETAIL , ATCH_FILE_ID , FRST_REGISTER_ID , FRST_REGIST_PNTTM) VALUES ('MTGP_000000000000003', 
+'강당', '08:00', '21:00', 5, '01', '강당', NULL, NULL, now() ) 
+
+    # queryId = mtgPlaceManageDAO.selectMtgPlaceManageList
+    ```
+    
+    5. 회의실 수정, 삭제
+    
+    ```
+    ```
+
+
+## 871.회의실 관리
+
+EgovMtgPlaceManageController
+    EgovMtgPlaceManageServiceImpl
+        mtgPlaceManageDAO.selectMtgPlaceIDList
+        mtgPlaceManageDAO.selectMtgPlaceResveManageList
+        mtgPlaceManageDAO.selectMtgPlaceResveDetail
+        mtgPlaceManageDAO.selectMtgPlaceResve
+
+EgovNtwrkSvcMntrngController
+    EgovNtwrkSvcMntrngServiceImpl
+        NtwrkSvcMntrngDAO.selectNtwrkSvcMntrngList
+        NtwrkSvcMntrngDAO.selectNtwrkSvcMntrngListCnt
+
+    1. 목록 조회
+    ```
+    # queryId = mtgPlaceManageDAO.selectMtgPlaceIDList
+    SELECT MTGRUM_ID AS mtgPlaceId , MTGRUM_NM AS mtgPlaceNm FROM COMTNMTGPLACEMANAGE WHERE 1=1 
+
+    # queryId = mtgPlaceManageDAO.selectMtgPlaceResveManageList
+    SELECT mtg.MTGRUM_NM as mtgPlaceNm, mtg.MTGRUM_ID as mtgPlaceId, IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.0800 ),'0') as 'resveTemp0800', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.0830 ),'0') as 'resveTemp0830', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.0900 ),'0') 
+as 'resveTemp0900', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.0930 ),'0') as 'resveTemp0930', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.1000 ),'0') as 'resveTemp1000', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1030 ),'0') as 'resveTemp1030', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1100 ),'0') as 'resveTemp1100', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1130 ),'0') 
+as 'resveTemp1130', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.1200 ),'0') as 'resveTemp1200', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.1230 ),'0') as 'resveTemp1230', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1300 ),'0') as 'resveTemp1300', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1330 ),'0') as 'resveTemp1330', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1400 ),'0') 
+as 'resveTemp1400', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.1430 ),'0') as 'resveTemp1430', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.1500 ),'0') as 'resveTemp1500', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1530 ),'0') as 'resveTemp1530', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1600 ),'0') as 'resveTemp1600', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1630 ),'0') 
+as 'resveTemp1630', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.1700 ),'0') as 'resveTemp1700', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.1730 ),'0') as 'resveTemp1730', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1800 ),'0') as 'resveTemp1800', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1830 ),'0') as 'resveTemp1830', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1900 ),'0') 
+as 'resveTemp1900', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.1930 ),'0') as 'resveTemp1930', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.2000 ),'0') as 'resveTemp2000', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.2030 ),'0') as 'resveTemp2030', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.2100 ),'0') as 'resveTemp2100' 
+from COMTNMTGPLACEMANAGE mtg left join ( select IFNULL(MTGRUM_ID,'') AS MTGRUM_ID, MAX(case 
+800 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then RESVE_ID else '' end) AS '0800', 
+MAX(case 830 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then RESVE_ID else '' end) 
+AS '0830', MAX(case 900 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then RESVE_ID else 
+'' end) AS '0900', MAX(case 930 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then RESVE_ID 
+else '' end) AS '0930', MAX(case 1000 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then 
+RESVE_ID else '' end) AS '1000', MAX(case 1030 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1030', MAX(case 1100 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1100', MAX(case 1130 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1130', MAX(case 1200 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1200', MAX(case 1230 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1230', MAX(case 1300 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1300', MAX(case 1330 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1330', MAX(case 1400 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1400', MAX(case 1430 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1430', MAX(case 1500 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1500', MAX(case 1530 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1530', MAX(case 1600 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1600', MAX(case 1630 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1630', MAX(case 1700 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1700', MAX(case 1730 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1730', MAX(case 1800 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1800', MAX(case 1830 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1830', MAX(case 1900 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1900', MAX(case 1930 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1930', MAX(case 2000 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '2000', MAX(case 2030 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '2030', MAX(case 2100 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '2100' FROM COMTNMTGPLACERESVE WHERE RESVE_DE = '20210216' 
+AND MTGRUM_ID = 'MTGP_000000000000001') res on res.MTGRUM_ID = mtg.MTGRUM_ID WHERE mtg.MTGRUM_ID 
+= 'MTGP_000000000000001' 
+
+    # queryId = mtgPlaceManageDAO.selectMtgPlaceResveManageList
+    SELECT mtg.MTGRUM_NM as mtgPlaceNm, mtg.MTGRUM_ID as mtgPlaceId, IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.0800 ),'0') as 'resveTemp0800', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.0830 ),'0') as 'resveTemp0830', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.0900 ),'0') 
+as 'resveTemp0900', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.0930 ),'0') as 'resveTemp0930', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.1000 ),'0') as 'resveTemp1000', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1030 ),'0') as 'resveTemp1030', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1100 ),'0') as 'resveTemp1100', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1130 ),'0') 
+as 'resveTemp1130', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.1200 ),'0') as 'resveTemp1200', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.1230 ),'0') as 'resveTemp1230', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1300 ),'0') as 'resveTemp1300', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1330 ),'0') as 'resveTemp1330', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1400 ),'0') 
+as 'resveTemp1400', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.1430 ),'0') as 'resveTemp1430', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.1500 ),'0') as 'resveTemp1500', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1530 ),'0') as 'resveTemp1530', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1600 ),'0') as 'resveTemp1600', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1630 ),'0') 
+as 'resveTemp1630', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.1700 ),'0') as 'resveTemp1700', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.1730 ),'0') as 'resveTemp1730', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1800 ),'0') as 'resveTemp1800', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1830 ),'0') as 'resveTemp1830', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1900 ),'0') 
+as 'resveTemp1900', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.1930 ),'0') as 'resveTemp1930', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.2000 ),'0') as 'resveTemp2000', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.2030 ),'0') as 'resveTemp2030', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.2100 ),'0') as 'resveTemp2100' 
+from COMTNMTGPLACEMANAGE mtg left join ( select IFNULL(MTGRUM_ID,'') AS MTGRUM_ID, MAX(case 
+800 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then RESVE_ID else '' end) AS '0800', 
+MAX(case 830 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then RESVE_ID else '' end) 
+AS '0830', MAX(case 900 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then RESVE_ID else 
+'' end) AS '0900', MAX(case 930 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then RESVE_ID 
+else '' end) AS '0930', MAX(case 1000 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then 
+RESVE_ID else '' end) AS '1000', MAX(case 1030 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1030', MAX(case 1100 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1100', MAX(case 1130 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1130', MAX(case 1200 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1200', MAX(case 1230 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1230', MAX(case 1300 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1300', MAX(case 1330 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1330', MAX(case 1400 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1400', MAX(case 1430 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1430', MAX(case 1500 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1500', MAX(case 1530 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1530', MAX(case 1600 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1600', MAX(case 1630 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1630', MAX(case 1700 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1700', MAX(case 1730 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1730', MAX(case 1800 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1800', MAX(case 1830 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1830', MAX(case 1900 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1900', MAX(case 1930 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1930', MAX(case 2000 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '2000', MAX(case 2030 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '2030', MAX(case 2100 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '2100' FROM COMTNMTGPLACERESVE WHERE RESVE_DE = '20210216' 
+AND MTGRUM_ID = 'MTGP_000000000000002') res on res.MTGRUM_ID = mtg.MTGRUM_ID WHERE mtg.MTGRUM_ID 
+= 'MTGP_000000000000002' 
+
+    # queryId = mtgPlaceManageDAO.selectMtgPlaceResveManageList
+    SELECT mtg.MTGRUM_NM as mtgPlaceNm, mtg.MTGRUM_ID as mtgPlaceId, IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.0800 ),'0') as 'resveTemp0800', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.0830 ),'0') as 'resveTemp0830', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.0900 ),'0') 
+as 'resveTemp0900', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.0930 ),'0') as 'resveTemp0930', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.1000 ),'0') as 'resveTemp1000', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1030 ),'0') as 'resveTemp1030', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1100 ),'0') as 'resveTemp1100', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1130 ),'0') 
+as 'resveTemp1130', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.1200 ),'0') as 'resveTemp1200', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.1230 ),'0') as 'resveTemp1230', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1300 ),'0') as 'resveTemp1300', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1330 ),'0') as 'resveTemp1330', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1400 ),'0') 
+as 'resveTemp1400', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.1430 ),'0') as 'resveTemp1430', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.1500 ),'0') as 'resveTemp1500', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1530 ),'0') as 'resveTemp1530', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1600 ),'0') as 'resveTemp1600', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1630 ),'0') 
+as 'resveTemp1630', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.1700 ),'0') as 'resveTemp1700', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.1730 ),'0') as 'resveTemp1730', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1800 ),'0') as 'resveTemp1800', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1830 ),'0') as 'resveTemp1830', 
+IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.1900 ),'0') 
+as 'resveTemp1900', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID 
+= res.1930 ),'0') as 'resveTemp1930', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE 
+WHERE RESVE_ID = res.2000 ),'0') as 'resveTemp2000', IFNULL((SELECT CONCAT(RESVE_ID,MTG_SJ) 
+FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.2030 ),'0') as 'resveTemp2030', IFNULL((SELECT 
+CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res.2100 ),'0') as 'resveTemp2100' 
+from COMTNMTGPLACEMANAGE mtg left join ( select IFNULL(MTGRUM_ID,'') AS MTGRUM_ID, MAX(case 
+800 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then RESVE_ID else '' end) AS '0800', 
+MAX(case 830 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then RESVE_ID else '' end) 
+AS '0830', MAX(case 900 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then RESVE_ID else 
+'' end) AS '0900', MAX(case 930 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then RESVE_ID 
+else '' end) AS '0930', MAX(case 1000 between RESVE_BEGIN_TM and (RESVE_END_TM-1) when 1 then 
+RESVE_ID else '' end) AS '1000', MAX(case 1030 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1030', MAX(case 1100 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1100', MAX(case 1130 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1130', MAX(case 1200 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1200', MAX(case 1230 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1230', MAX(case 1300 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1300', MAX(case 1330 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1330', MAX(case 1400 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1400', MAX(case 1430 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1430', MAX(case 1500 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1500', MAX(case 1530 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1530', MAX(case 1600 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1600', MAX(case 1630 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1630', MAX(case 1700 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1700', MAX(case 1730 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1730', MAX(case 1800 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1800', MAX(case 1830 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1830', MAX(case 1900 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1900', MAX(case 1930 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '1930', MAX(case 2000 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '2000', MAX(case 2030 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '2030', MAX(case 2100 between RESVE_BEGIN_TM and (RESVE_END_TM-1) 
+when 1 then RESVE_ID else '' end) AS '2100' FROM COMTNMTGPLACERESVE WHERE RESVE_DE = '20210216' 
+AND MTGRUM_ID = 'MTGP_000000000000003') res on res.MTGRUM_ID = mtg.MTGRUM_ID WHERE mtg.MTGRUM_ID 
+= 'MTGP_000000000000003' 
+
+    # queryId = NtwrkSvcMntrngDAO.selectNtwrkSvcMntrngList
+    SELECT A.SYS_IP, A.SYS_PORT, A.SYS_NM, B.CODE_NM MNTRNG_STTUS, A.MNGR_NM, A.MNGR_EMAIL_ADRES 
+FROM COMTNNTWRKSVCMNTRNG A LEFT OUTER JOIN COMTCCMMNDETAILCODE B ON B.CODE_ID = 'COM046' AND 
+A.MNTRNG_STTUS = B.CODE WHERE 1 = 1 AND binary(A.SYS_NM) LIKE CONCAT('%', '', '%') ORDER BY 
+A.FRST_REGIST_PNTTM DESC LIMIT 10000 OFFSET 0 
+
+    # queryId = NtwrkSvcMntrngDAO.selectNtwrkSvcMntrngListCnt
+    SELECT COUNT(A.SYS_IP) as cnt FROM COMTNNTWRKSVCMNTRNG A LEFT OUTER JOIN COMTCCMMNDETAILCODE 
+B ON B.CODE_ID = 'COM046' AND A.MNTRNG_STTUS = B.CODE WHERE 1 = 1 AND binary(A.SYS_NM) LIKE 
+CONCAT('%', '', '%') 
+    ```
+    
+    2. 예약 상세
+    ```
+    # queryId = mtgPlaceManageDAO.selectMtgPlaceResveDetail
+    SELECT mtg.MTGRUM_ID AS mtgPlaceId , mtg.MTGRUM_NM AS mtgPlaceNm , mtg.OPN_BEGIN_TM AS opnBeginTm 
+, mtg.OPN_END_TM AS opnEndTm , mtg.LC_SE AS lcSe , mtg.LC_DETAIL AS lcDetail , mtg.ATCH_FILE_ID 
+AS atchFileId , (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM070' and code = 
+mtg.LC_SE) AS mtgPlaceTemp3, res.RESVE_ID AS resveId , res.MTG_SJ AS mtgSj , res.RESVE_DE AS 
+resveDe , res.RESVE_BEGIN_TM AS resveBeginTm, res.RESVE_END_TM AS resveEndTm , res.ATNDNC_NMPR 
+AS atndncNmpr , res.MTG_CN AS mtgCn , (select info.ORGNZT_NM from COMTNORGNZTINFO info where 
+info.ORGNZT_ID = mst.ORGNZT_ID ) AS mtgPlaceTemp5, res.RSVCTM_ID AS resveManId , mst.USER_NM 
+AS mtgPlaceTemp4 FROM COMTNMTGPLACEMANAGE mtg, COMTNMTGPLACERESVE res, COMVNUSERMASTER mst 
+WHERE 1=1 AND res.MTGRUM_ID = mtg.MTGRUM_ID AND res.RSVCTM_ID = mst.ESNTL_ID AND res.RESVE_ID 
+= 'RESVE_00000000000002' AND mtg.MTGRUM_ID = 'MTGP_000000000000001' 
+
+    ```
+    
+    3. 예약 신청
+    ```
+    # queryId = mtgPlaceManageDAO.selectMtgPlaceResve
+    select mtg.MTGRUM_ID AS mtgPlaceId, mtg.MTGRUM_NM AS mtgPlaceNm, mtg.OPN_BEGIN_TM AS opnBeginTm, 
+mtg.OPN_END_TM AS opnEndTm , mtg.LC_SE AS lcSe , mtg.LC_DETAIL AS lcDetail , mtg.ATCH_FILE_ID 
+AS atchFileId, (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM070' and code = 
+mtg.LC_SE) AS mtgPlaceTemp3, IFNULL(res.RESVE_ID,"") AS resveId , IFNULL(res.MTG_SJ ,"") AS 
+mtgSj , IFNULL(res.RESVE_DE,"") AS resveDe , IFNULL(res.RESVE_BEGIN_TM,"") AS resveBeginTm, 
+IFNULL(res.RESVE_END_TM,"") AS resveEndTm , IFNULL(res.ATNDNC_NMPR,0) AS atndncNmpr , IFNULL(res.MTG_CN 
+,"") AS mtgCn from COMTNMTGPLACEMANAGE mtg left join COMTNMTGPLACERESVE res on res.MTGRUM_ID 
+= mtg.MTGRUM_ID AND res.RESVE_ID = '' where mtg.MTGRUM_ID = 'MTGP_000000000000001' 
+
+    ```
+
+    4. 예약 수정, 삭제
+    ```
+    #
+    ```
+
+
+# 회원가입/ 로그안
+
+## 회원가입 프로세스
+    1. COMTECOPSEQ(?) 조회
+        ```
+        SELECT next_id FROM COMTECOPSEQ WHERE table_name = 'USRCNFRM_ID' 
+        ```
+    2. COMTECOPSEQ(?) 업데이트
+        ```
+        UPDATE COMTECOPSEQ SET next_id = 13 WHERE table_name = 'USRCNFRM_ID' 
+        ```
+    3. 회원 INSERT
+        ```
+        INSERT INTO COMTNGNRLMBER 
+        ( ESNTL_ID , MBER_ID , MBER_NM , PASSWORD , PASSWORD_HINT , PASSWORD_CNSR , IHIDNUM , SEXDSTN_CODE , ZIP , ADRES , AREA_NO , MBER_STTUS , DETAIL_ADRES , END_TELNO , MBTLNUM , GROUP_ID , MBER_FXNUM , MBER_EMAIL_ADRES , MIDDLE_TELNO , SBSCRB_DE ) 
+        VALUES( 'USRCNFRM_00000000003', 'test', 'test', k36NX7tIvUlJU2zWW401xCa4DS+DDFwwjizexCKuIkQ=', 'P01', '1234', NULL, '', '1234', '1234', '02', 'A', '', '0000', '010-0000-0000', NULL, '', 'test@test.com', '000', sysdate()) 
+        ```
+
+## 로그인 프로세스
+    1. LoginDAO
+    ```
+    # 회원 존재여부 조회
+    SELECT MBER_ID AS USER_ID , PASSWORD AS USER_PW , MBER_NM AS USER_NM , ESNTL_ID AS UNIQ_ID , IFNULL(LOCK_AT,'N') LOCK_AT , IFNULL(LOCK_CNT,0) AS LOCK_CNT FROM COMTNGNRLMBER WHERE MBER_ID = 'USER' 
+
+    # LOCK(?) 정보 NULL 수정
+    UPDATE COMTNGNRLMBER SET LOCK_AT = NULL , LOCK_CNT = NULL , LOCK_LAST_PNTTM = NULL WHERE MBER_ID = 'USER' 
+
+    # 회원 로그인 조건 체크(mber_sttus = 'P')
+    SELECT mber_id AS id , mber_nm AS name , ihidNum AS ihidNum , password AS password , mber_email_adres AS email , 'GNR' AS userSe , '-' AS orgnztId , esntl_id AS uniqId FROM COMTNGNRLMBER WHERE mber_id = 'USER' AND password = '6TAJYwhKCgkgzPXDb83ZUiHi2/KHhD7t5Ba6RN2qoo=' AND mber_sttus = 'P' 
+
+    ```
+    2. EgovSpringSecurityLoginFilter
+    ```
+    # (?)
+    SELECT USER_ID, ESNTL_ID AS PASSWORD, 1 ENABLED, USER_NM, USER_ZIP, USER_ADRES, USER_EMAIL, USER_SE, ORGNZT_ID, ESNTL_ID, (select a.ORGNZT_NM from COMTNORGNZTINFO a where a.ORGNZT_ID = m.ORGNZT_ID) ORGNZT_NM FROM COMVNUSERMASTER m WHERE CONCAT(USER_SE, USER_ID) = 'GNRUSER' 
+    ```
+
+    3. EgovSessionMapping
+    ```
+    # (?)
+    SELECT A.SCRTY_DTRMN_TRGET_ID USER_ID, A.AUTHOR_CODE AUTHORITY FROM COMTNEMPLYRSCRTYESTBS A, COMVNUSERMASTER B WHERE A. SCRTY_DTRMN_TRGET_ID = B.ESNTL_ID AND B.USER_ID = 'USER' 
+    ```
