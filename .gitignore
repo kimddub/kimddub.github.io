@@ -1,3 +1,9 @@
+
+# don't push config file - there is local url link for test
+_config
+
+# ignore target
+.gitignore
 *.gem
 .bundle
 .ruby-version
@@ -5,6 +11,8 @@
 .sass-cache
 _site
 Gemfile.lock
-node_modules
+node_modules 
 
+
+# ignore target of only under the root path
 /vendor
