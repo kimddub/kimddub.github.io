@@ -7,8 +7,22 @@ permalink: /docs/blog/draft/draft-4
 nav_order: 3
 ---
 
-Git
 ===========
+# Git
+
+### bare repostory
+서버에 git 설치
+```
+# 패키지 리스트를 업데이트합니다.
+sudo apt-get install git
+# git 설치
+sudo apt install git
+# 설치된 git 버전 확인
+git --version
+# git repository 디렉토리 생성 후 init
+git init --bare remote
+```
+
 ### Hook
 husky?
 특정 동작 단계에 script를 실행하도록 설정해두는 것
@@ -240,6 +254,20 @@ develop 권한자가 Upstream Repository의 master 권한자에게 merge 요청�
 로컬에 있는 특정 파일의 변동 추적을 중지하고 더 나아가 아예 삭제하고 싶은 경우
 만약 원격저장소에 파일이 있다면 원격 저장소에서의 파일은 삭제한다.
 
+### 권한설정
+```
+# password 오류로 Access denied 발생 시 해결
+git config --system --unset credential.helper
+
+# 자동 로그인 설정
+git config credential.helper store
+git push https://...git
+
+# 설정
+git config --global user.name "kimddub"
+git config --global user.email kimddub@vaiv.kr
+```
+
 ### commit
 - untracked files
     작업 트리의 파일 상태에서 기존에 없던 새로운 소스가 status 내역에 표시된다. 
@@ -261,7 +289,7 @@ develop 권한자가 Upstream Repository의 master 권한자에게 merge 요청�
     ```
 
 ### 작업 트리(Work tree)와 인덱스(Index)
- 작업 트리(ssandbox) <-> 인덱스(staging area) <-> 로컬저장소 <-> 원격저장소 
+ 작업 트리(sandbox) <-> 인덱스(staging area) <-> 로컬저장소 <-> 원격저장소 
 1. 위의 프로세스에서 내가 방금 수정한 파일이 작업 트리에 속한다.
 2. 작업 트리를 add를 통해 staging 시킨 상태가 인덱스에 속한다.
     index에 staging 하는 목적은 수정한 파일의 일부를 선택해서 올릴 수 있는 것이다.
