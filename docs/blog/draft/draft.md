@@ -1,9 +1,9 @@
 ---
 layout: default
 title: draft
-parent: Blog
+parent: nondisp
 has_children: true
-permalink: /docs/nondisp/draft
+permalink: /docs/blog/draft
 nav_order: 1
 ---
 # TIL draft
