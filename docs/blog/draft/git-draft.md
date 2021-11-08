@@ -7,7 +7,6 @@ permalink: /docs/blog/draft/draft-4
 nav_order: 3
 ---
 
-===========
 # Git
 
 ### bare repostory
