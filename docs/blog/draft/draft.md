@@ -3,9 +3,10 @@ layout: default
 title: draft
 parent: nondisp
 has_children: true
-permalink: /docs/blog/draft
+permalink: /docs/nondisp/nondisp
 nav_order: 1
 ---
+
 # TIL draft
 {: .fs-6 .fw-300 }
 
