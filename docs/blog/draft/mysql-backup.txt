@@ -1,0 +1,168 @@
+################# 백업 스크립트 ##############
+
+#!/bin/bash 
+
+#------------------------------------------- 
+# 
+# Backup Shell Script 
+# 
+# Developer : 바이브컴퍼니 
+# 
+# date of initial development 2021-10-13 
+# Final modification date 2021-10-13 
+#------------------------------------------- 
+
+# profile 
+source /mnt/nfa2020/sse_unix/script/.profile
+
+# Variable Declaration 
+BAK_FILE_NM=_db_backup_`date +"%Y%m%d"`.sql 
+BAK_LOG_FILE_NM=db_backup_`date +"%Y%m%d"`.log 
+BAK_FILE_SAVE_PATH=/home/mysql/mysql_dump/files
+BAK_FILE_DIRECTORY=`date +"%Y%m%d"` 
+WEEK_AGO=`date -d '1 week ago' +"%Y%m%d"` 
+MYSQL_DATABASE=('db_sejong' 'DB_CCP' 'DB_OLP' 'DB_OAS' 'EAM_ADM')
+MYSQL_HOST=('10.100.30.13' '10.100.30.103' '10.100.30.123' '10.100.30.63' '10.100.30.123')
+MYSQL_USER=('kpst_deid' 'DB_CCP_ADMIN' 'olp' 'oas' 'EAM_ADM')
+MYSQL_PASSWORD=('kpst_deid_123' 'Db_ccp_1324!' 'Db_olp_1324!' 'Db_oas_1324!' 'dream1004')
+
+MYSQL_NONID_TABLE='tbl_cmn_codec_type tbl_cmn_job_states tbl_cmn_job_type tbl_cmn_node tbl_cmn_prj_state tbl_cmn_request_status tbl_cmn_stat_event_type tbl_cmn_stat_sendrev_type tbl_cmn_system tbl_ds_dataset_list tbl_job_cloud_gpu_resources_infos tbl_job_cloud_pod_resources_infos tbl_job_cloud_total_resources_infos tbl_job_connection_logs tbl_job_cpu_resource_infos tbl_job_delete_projects tbl_job_ds_status tbl_job_gpu_resource_infos tbl_job_logs tbl_job_prj_status tbl_job_reid_request tbl_job_request tbl_job_request_delete tbl_job_request_restart tbl_job_request_stop tbl_job_system_info tbl_job_users tbl_masking_key tbl_project tbl_stat_error tbl_stat_event tbl_stat_process_speed tbl_stat_send_recv'
+
+# create backup directory 
+mkdir -p ${BAK_FILE_SAVE_PATH}/${BAK_FILE_DIRECTORY} 
+
+# backup start 
+for ((index=0 ; index < ${#MYSQL_DATABASE[@]} ; index++));
+do 
+    echo `date +"%Y-%m-%d %H:%M:%S"`" <<<"${MYSQL_DATABASE[$index]}" backup shell script start!>>>" >> ${BAK_FILE_SAVE_PATH}/${BAK_FILE_DIRECTORY}/${BAK_LOG_FILE_NM} 
+
+   if [ $index -eq 0 ]; then
+    
+    mysqldump --default-character-set=utf8 --no-tablespaces ${MYSQL_DATABASE[$index]} ${MYSQL_NONID_TABLE} -h ${MYSQL_HOST[$index]} -u ${MYSQL_USER[$index]} -p${MYSQL_PASSWORD[$index]} > ${BAK_FILE_SAVE_PATH}/${BAK_FILE_DIRECTORY}/${MYSQL_DATABASE[$index]}${BAK_FILE_NM} 2>&1 &&
+    echo [$index] database table backup finish
+    
+    else
+    
+    mysqldump --default-character-set=utf8 --no-tablespaces --databases ${MYSQL_DATABASE[$index]} -h ${MYSQL_HOST[$index]} -u ${MYSQL_USER[$index]} -p${MYSQL_PASSWORD[$index]} > ${BAK_FILE_SAVE_PATH}/${BAK_FILE_DIRECTORY}/${MYSQL_DATABASE[$index]}${BAK_FILE_NM} 2>&1 &&
+    echo [$index] database backup finish
+   
+   fi
+
+    echo `date +"%Y-%m-%d %H:%M:%S"`" <<<"${MYSQL_DATABASE[$index]}" backup shell script end>>>" >> ${BAK_FILE_SAVE_PATH}/${BAK_FILE_DIRECTORY}/${BAK_LOG_FILE_NM} 
+    echo "" >> ${BAK_FILE_SAVE_PATH}/${BAK_FILE_DIRECTORY}/${BAK_LOG_FILE_NM} 
+done 
+
+# 1 week ago backup delete 
+rm -rf $BAK_FILE_SAVE_PATH/$WEEK_AGO
+
+################# 복원 절차 ##############
+
+drop user 'kpst_deid'@'%';
+drop database db_sejong;
+create user 'kpst_deid'@'%' identified by 'kpst_deid_123'; 
+create database db_sejong default character set utf8;
+grant all privileges ON db_sejong.* TO 'kpst_deid'@'%';
+
+drop user 'DB_CCP_ADMIN'@'%';
+drop database DB_CCP;
+create user 'DB_CCP_ADMIN'@'%' identified by 'Db_ccp_1324!'; 
+create database DB_CCP default character set utf8;
+grant all privileges ON DB_CCP.* TO 'DB_CCP_ADMIN'@'%';
+
+drop user 'olp'@'%';
+drop user 'sso'@'%';
+drop database DB_OLP;
+create user 'olp'@'%' identified by 'Db_olp_1324!'; 
+create user 'sso'@'%' identified by 'Db_sso_1324!'; 
+create database DB_OLP default character set utf8;
+grant all privileges ON DB_OLP.* TO 'olp'@'%';
+grant all privileges ON DB_OLP.* TO 'sso'@'%';
+
+drop user 'oas'@'%';
+drop database DB_OAS;
+create user 'oas'@'%' identified by 'Db_oas_1324!'; 
+create database DB_OAS default character set utf8;
+grant all privileges ON DB_OAS.* TO 'oas'@'%';
+
+drop user 'EAM_ADM'@'%';
+drop database EAM_ADM;
+create user 'EAM_ADM'@'%' identified by 'dream1004'; 
+create database EAM_ADM default character set utf8;
+grant all privileges ON EAM_ADM.* TO 'EAM_ADM'@'%';
+
+# cd /home/mysql/mysql_dump/files/[일자]
+mysql -u root -p db_sejong < db_sejong_db_backup_20211027.sql
+mysql -u root -p DB_CCP < DB_CCP_db_backup_20211027.sql  
+mysql -u root -p DB_OLP < DB_OLP_db_backup_20211027.sql
+mysql -u root -p DB_OAS < DB_OAS_db_backup_20211027.sql  
+mysql -u root -p EAM_ADM < EAM_ADM_db_backup_20211027.sql
+
+
+################# 실장님 메모 ##############
+
+/usr/lib/systemd/system/mysqld.service
+
+alter user 'root'@'localhost' identified by 'Sejongtp0099';
+
+
++--------------------+
+| Database           |
++--------------------+
+| DB_OAS             |
+| DB_OPN             |
+| DB_SRC             |
+
+
+mysqldump -uroot -p --databases DB_OAS > DB_OAS.sql
+mysqldump -uoas -p --databases DB_OAS > DB_OAS.sql
+mysqldump -uroot -p EAM_ADM > EAM_ADM.sql
+
+
+mysqldump -uroot -p --default-character-set=utf8  --databases DB_OAS > DB_OAS.sql  -- 데이터 개방
+mysqldump -uroot -p --default-character-set=utf8  --databases DB_OLP > DB_OLP.sql  -- 오픈랩
+mysqldump -uroot -p --default-character-set=utf8  --databases EAM_ADM > EAM_ADM.sql -- sso 
+mysqldump -uroot -p --default-character-set=utf8  --databases DB_CCP > DB_CCP.sql -- 자율주행 
+mysqldump -uroot -p --default-character-set=utf8  --databases db_sejong > db_sejong.sql -- 개인정보 비식별화
+
+
+https://www.phpschool.com/gnuboard4/bbs/board.php?bo_table=qna_db&wr_id=211719&sca=&sfl=wr_subject&stx=mysqldump&sop=and
+
+
+
+
+create database DB_OAS CHARACTER SET = 'UTF8' COLLATE = 'utf8_general_ci';
+CREATE USER 'oas'@'%' IDENTIFIED BY 'Db_oas_1324!';
+GRANT ALL  ON DB_OAS.* TO  'oas'@'%';
+GRANT file  on *.* TO  'oas'@'%';
+flush privileges;
+
+
+create database DB_OLP CHARACTER SET = 'UTF8' COLLATE = 'utf8_general_ci';
+CREATE USER 'olp'@'%' IDENTIFIED BY 'Db_olp_1324!';
+GRANT ALL  ON DB_OLP.* TO  'olp'@'%';
+GRANT file  on *.* TO  'olp'@'%';
+flush privileges;
+
+create database EAM_ADM CHARACTER SET = 'UTF8' COLLATE = 'utf8_general_ci';
+CREATE USER 'eam'@'%' IDENTIFIED BY 'Db_eam_1324!';
+GRANT ALL  ON EAM_ADM.* TO  'eam'@'%';
+GRANT file  on *.* TO  'eam'@'%';
+flush privileges;
+
+
+create database DB_CCP CHARACTER SET = 'UTF8' COLLATE = 'utf8_general_ci';
+CREATE USER 'DB_CCP_ADMIN'@'%' IDENTIFIED BY 'Db_ccp_1324!';
+GRANT ALL  ON DB_CCP.* TO  'DB_CCP_ADMIN'@'%';
+GRANT file  on *.* TO  'DB_CCP_ADMIN'@'%';
+flush privileges;
+
+create database db_sejong CHARACTER SET = 'UTF8' COLLATE = 'utf8_general_ci';
+CREATE USER 'kpst_deid'@'%' IDENTIFIED BY 'kpst_deid_123';
+GRANT ALL  ON db_sejong.* TO  'kpst_deid'@'%';
+GRANT file  on *.* TO  'kpst_deid'@'%';
+flush privileges;
+
+mysql -u root -p   < /home/mysql/mysql_dump/DB_OAS.sql
+mysql -u root -p   < /home/mysql/mysql_dump/DB_OLP.sql
+mysql -u root -p   < /home/mysql/mysql_dump/EAM_ADM.sql
+mysql -u root -p   < /home/mysql/mysql_dump/DB_CCP.sql
