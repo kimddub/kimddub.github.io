@@ -121,7 +121,7 @@ git stash apply
 # stage 상태까지 반영해서 불러오기
 git stash apply --index
 
-# 임시저장 한 작업 되돌리기
+# 임시저장 한 작업 되돌리기(apply + stash 목록에서 삭제)
 git stash pop
 
 # 임시저장 한 작업 삭제

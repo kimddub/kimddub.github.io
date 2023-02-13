@@ -31,33 +31,6 @@ JAVA
 
 ### WAR, JAR
 
-
-------------------------------------------------------
-------------------------------------------------------
-
-
-Eclipse
-============
-
-# Issue 해결
-- - -
-## node 버전에 따른 경고
-> Node.js version could not be determined. Node.js version could not be determined. Please make sure a supported version of node.js is installed, editors may be missing key features otherwise. Supported major versions are: 10, 11, 12, 13, 14
-
-
-### 참고 : <https://royzero.tistory.com/43>
-
-
-
-------------------------------------------------------
-------------------------------------------------------
-
-
-
-Linux
-============
-
-# 명령어
-- - -
-## PowerShell
-- $env: + [환경변수] : window 환경변수를 사용한다.
+### memory 관련
+intellij low memory warning
+heap memory, xms, xmx 

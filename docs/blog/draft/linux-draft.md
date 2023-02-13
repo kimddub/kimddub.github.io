@@ -7,7 +7,9 @@ permalink: /docs/blog/draft/linux
 nav_order: 3
 ---
 
-===========
+Linux
+============
+
 # Linux
 
 ### sudo
@@ -42,6 +44,10 @@ sudo netstat -nplt
 # 방화벽 확인
 telnet [IP] [PORT]
 netstat -an | find "[IP]:[PORT]"
+
+# PowerShell
+- $env: + [환경변수] : window 환경변수를 사용한다.
+
 ```
 
 ### mysql
