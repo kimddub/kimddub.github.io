@@ -1,10 +1,15 @@
 ---
 layout: default
-title: [Oracle] 
+title: [Oracle] 개념
 grand_parent: Blog
 parent: eGovFramework
-permalink: /docs/blog/eGovFramework/oracle
+permalink: /docs/blog/database/oracle
 date: 2023-02-13 10:04
 ---
 
-# PL/SLQ 기초
+# declare
+# call
+# exec
+# execute
+# 대입연산자(:=)
+	
