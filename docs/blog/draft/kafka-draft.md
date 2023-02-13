@@ -3,7 +3,7 @@ layout: default
 title: draft-5
 grand_parent: Blog
 parent: draft
-permalink: /docs/blog/draft/draft-5
+permalink: /docs/blog/draft/kafka
 nav_order: 3
 ---
 

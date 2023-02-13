@@ -1,3 +1,11 @@
+---
+layout: default
+title: draft-1
+grand_parent: Blog
+parent: draft
+permalink: /docs/blog/draft/project
+nav_order: 1
+---
 
 자율주행 빅데이터 관제센터 홈페이지
 ================================

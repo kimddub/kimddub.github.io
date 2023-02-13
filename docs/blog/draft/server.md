@@ -1,3 +1,11 @@
+---
+layout: default
+title: draft-1
+grand_parent: Blog
+parent: draft
+permalink: /docs/blog/draft/server
+nav_order: 1
+---
 
 # Apache HTTP 와 WAS 연동
 http://monibu1548.github.io/2017/02/26/web-optimize-1/

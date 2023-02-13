@@ -3,7 +3,7 @@ layout: default
 title: draft-4
 grand_parent: Blog
 parent: draft
-permalink: /docs/blog/draft/draft-4
+permalink: /docs/blog/draft/linux
 nav_order: 3
 ---
 
