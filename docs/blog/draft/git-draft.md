@@ -3,7 +3,7 @@ layout: default
 title: draft-4
 grand_parent: Blog
 parent: draft
-permalink: /docs/blog/draft/git
+permalink: /docs/blog/draft/draft-4
 nav_order: 3
 ---
 
@@ -121,7 +121,7 @@ git stash apply
 # stage 상태까지 반영해서 불러오기
 git stash apply --index
 
-# 임시저장 한 작업 되돌리기(apply + stash 목록에서 삭제)
+# 임시저장 한 작업 되돌리기
 git stash pop
 
 # 임시저장 한 작업 삭제
@@ -203,6 +203,18 @@ develop 권한자가 Upstream Repository의 master 권한자에게 merge 요청�
 
 - merge 
      커밋 또는 브랜치 소스를 합친다.
+     ```
+    # upstream 브랜치 커밋 가져오기
+    git remote add upstream [repository경로]
+    git pull upstream [브랜치]
+
+    # upstream pull 이후 특정 파일만 취소하기
+    git checkout -- [파일경로]
+    git restore [파일경로]
+
+     # 특정 파일을 다른 브랜치에서 머지
+     git checkout -p origin/[브랜치] [파일경로]
+     ```
 
 - upstream
     remote repository를 fork 뜨는 경우 upstream이 기존 원격지이고, 내가 fork 뜬 원격지가 origin이 된다.
