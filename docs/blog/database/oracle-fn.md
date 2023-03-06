@@ -4,6 +4,7 @@ title: [Oracle] Function
 grand_parent: Blog
 parent: database
 permalink: /docs/blog/database/oracle-fn
+nav_order: 2
 date: 2023-02-13 10:40
 ---
 
