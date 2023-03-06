@@ -88,7 +88,35 @@ Oracle 9i부터 생긴 표준 SQL의 커맨드. 함수나 프로시저 호출에
 EXEC과 유사하나 실행계획이 다르며 성능이 더 좋다고 함.
 
 ### CURSOR
-작성중
+SQL 처리 결과 메모리를 가리키는 포인터로 여러 결과 ROW에 순차적으로 접근할 수 있다.  
+
+- 종류
+  - 묵시적 커서
+    오라클 내부에서 자동 생성된 SQL 실행시마다 자동으로 생성/실행되는 커서
+  - 명시적 커서
+    사용자가 직접 정의해서 사용하는 커서
+- 문법
+  ```sql
+  -- 선언
+  CURSOR {커서명} ({매개변수})
+  IS
+    -- 실행문
+  ;
+  
+  -- 열기
+  OPEN {커서명} ({매개변수});
+  
+  -- 사용
+  LOOP
+  FETCH {커서명} INTO {변수명}
+  EXIT WHEN {커서명}%NOTFOUND;
+    -- 실행문;
+  END LOOP;
+  
+  -- 닫기
+  CLOSE {커서명};
+  ```
 
 
 *참고 : [cailisin님 블로그](https://cailisin.tistory.com/149)*
+*참고 : [coding-factory님 블로그](https://coding-factory.tistory.com/455)*
