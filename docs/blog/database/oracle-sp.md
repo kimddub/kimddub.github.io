@@ -4,6 +4,7 @@ title: [Oracle] SP(Stored Procedure)
 grand_parent: Blog
 parent: database
 permalink: /docs/blog/database/oracle-sp
+nav_order: 3
 date: 2023-02-13 10:40
 ---
 

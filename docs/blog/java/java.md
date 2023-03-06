@@ -7,3 +7,5 @@ permalink: /docs/blog/java
 nav_order: 1
 ---
 
+# Java
+{: .fs-6 .fw-300 }
