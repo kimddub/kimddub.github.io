@@ -4,7 +4,7 @@ title: database
 parent: Blog
 has_children: true
 permalink: /docs/blog/database
-nav_order: 2
+nav_order: 1
 ---
 
 # Database
