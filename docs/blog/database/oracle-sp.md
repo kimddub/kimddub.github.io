@@ -1,6 +1,6 @@
 ---
 layout: default
-title: [Oracle] SP(Stored Procedure)
+title: "[Oracle] SP(Stored Procedure)"
 grand_parent: Blog
 parent: database
 permalink: /docs/blog/database/oracle-sp

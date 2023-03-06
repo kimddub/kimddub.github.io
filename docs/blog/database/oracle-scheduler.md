@@ -1,8 +1,8 @@
 ---
 layout: default
-title: [Oracle] 스케줄러
+title: "[Oracle] 스케줄러"
 grand_parent: Blog
-parent: eGovFramework
+parent: database
 permalink: /docs/blog/database/oracle-scheduler
 nav_order: 3
 date: 2023-02-13 17:40

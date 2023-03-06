@@ -1,6 +1,6 @@
 ---
 layout: default
-title: [Oracle] PL/SLQ(Procedural Language/SQL)
+title: "[Oracle] PL/SLQ(Procedural Language/SQL)"
 grand_parent: Blog
 parent: database
 permalink: /docs/blog/database/oracle-plsql
