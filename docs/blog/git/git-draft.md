@@ -4,7 +4,8 @@ title: git
 grand_parent: Blog
 parent: draft
 permalink: /docs/blog/git/git-draft
-nav_order: 3
+nav_order: 1
+date: 2023-03-06 15:04
 ---
 
 # Git

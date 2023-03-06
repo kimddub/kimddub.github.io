@@ -4,7 +4,7 @@ title: [Oracle] PL/SLQ(Procedural Language/SQL)
 grand_parent: Blog
 parent: database
 permalink: /docs/blog/database/oracle-plsql
-nav_order: 3
+nav_order: 2
 date: 2023-02-13 10:04
 ---
 
