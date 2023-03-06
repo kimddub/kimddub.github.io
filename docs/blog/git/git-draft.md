@@ -1,9 +1,9 @@
 ---
 layout: default
-title: draft-4
+title: git
 grand_parent: Blog
 parent: draft
-permalink: /docs/blog/draft/draft-4
+permalink: /docs/blog/git/git-draft
 nav_order: 3
 ---
 
