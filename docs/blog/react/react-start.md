@@ -18,15 +18,15 @@ date: 2023-04-07 10:04
 - 개발사 Meta(facebook).
 
 ## 특징
-  ### Data Flow
+  ### `Data Flow`
   단방향 데이터 흐름으로 Angular.js(양방향 데이터 바인딩) 보다 데이터 흐름 추적이 용이. 
-  ### Component 구조
+  ### `Component 구조`
   컴포넌트 단위로 분리된 View를 조립하여 화면을 구성. 코드 파악이 용이하고 재사용성 높음.
-  ### Virtual Dom
+  ### `Virtual Dom`
   최소한의 변경사항만 DOM에 반영하여 효율성과 속도 개선.
-  ### Props and Stat
+  ### `Props and State`
   읽기 전용 데이터인 Props와 동적 데이터인 State.
-  ### JSX
+  ### `JSX`
   js를 확장한 문법.
 > 출처: [jini_eum님 블로그](https://velog.io/@jini_eun/React-React.js%EB%9E%80-%EA%B0%84%EB%8B%A8-%EC%A0%95%EB%A6%AC)
 
