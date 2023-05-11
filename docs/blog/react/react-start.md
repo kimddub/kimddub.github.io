@@ -36,3 +36,20 @@ date: 2023-04-07 10:04
 - Props Drilling
   - Props로만 데이터를 전달하면 발생할 수 있는 문제로, 데이터를 깊숙이 전달해야 하는 경우 여러 컴포넌트를 거쳐야 함
 > 출처: [veloprt님 블로그](https://velog.io/@velopert/react-context-tutorial)  
+- 컴포넌트
+  - 함수형 컴포넌트
+  - 클래스형 컴포넌트(old)
+  - [//]: # (TODO:)
+- Hooks
+  - 왜 사용하는지?
+  - useState, useRef 등의 방법이 있음
+  - [//]: # (TODO:)
+- Redux 
+  - 왜 사용하는지?
+  - 사용방법: react-redux 설치
+  - [//]: # (TODO:)
+- 비동기 통신
+  - 사용방법: react-thunk 라이브러리나 react-saga 라이브버리 설치
+  - [//]: # (TODO:)
+- styled-components
+  - [//]: # (TODO:)

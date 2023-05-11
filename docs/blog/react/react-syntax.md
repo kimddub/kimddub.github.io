@@ -30,7 +30,7 @@ date: 2023-04-07 10:04
     <div style={ { width : '100px', fontSize: '10px'} } ></div>
   ```
   
-### State
+### State(Hooks)
 - 변수
 state는 데이터 저장소와도 같다. 
 변수에 할당한 데이터가 변경되면 HTML을 새로고침해야 하는 반면, state에 담은 변수는 데이터가 변경되면 자동으로 재랜더링된다.   
