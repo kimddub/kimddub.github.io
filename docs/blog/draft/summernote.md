@@ -1,3 +1,11 @@
+---
+layout: default
+title: angular
+grand_parent: Blog
+parent: draft
+permalink: /docs/blog/draft/summernote
+nav_order: 3
+---
 
 썸머노트(summernote)
 ===========
