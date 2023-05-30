@@ -90,7 +90,24 @@ date: 2023-04-07 10:04
       - 화면 영역 에러 - 처리 가능
       - 외부요인에 의한 에러 - 대처 불가능
       - 런타임 에러 - 대처 불가능
-    - 
+- CSS in JS
+  - styled-components
+    - Tagged Template Literal
+    - Template Literal
+      - javascript에서 문자열 내에 객체를 조회하고자 할 때 사용하는 문법으로 문자열과 변수(${val})를 그레이브(`)로 감싸면 변수가 값으로 대치된다.
+  - emotion
+  - styled-jsx
+- Router
+  - SPA에서도 페이지가 분리될 수 있는데, 이때 페이지로 요청하기 위한 URL을 매핑해주는 도구로써 사용
+  - react-router
+    - 써드파티 라이브러리
+  - Next.js
+    - 리액트 프레임워크로 CRA와 같이 리액트 환경 설정, 라우팅, 최적화, 서버사이드 랜더링 등 제공
+- Code Spliting
+  - 코드 스플리팅 VS 서버사이드 랜더링
+  - 하나의 파일에 모든 로직이 들어가게 되면 용량 및 페이지 로딩 성능이 저하됨
+  - 당장 필요한 코드가 아닌 경우 분리하여 상황에 맞게 로드하여 사용하는 방향으로 개발하는 작업
+  - import 방식(promise 리턴), HoC 방식(withSpliting), 라우터 방식, react-loadable
 - Redux 
   - 왜 사용하는지?
   - 사용방법: react-redux 설치
