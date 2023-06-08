@@ -4,7 +4,7 @@ title: "[React] 2.세팅하기"
 grand_parent: Blog
 parent: react
 permalink: /docs/blog/react/setting
-nav_order: 1
+nav_order: 3
 date: 2023-04-07 10:04
 ---
 

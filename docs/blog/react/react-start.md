@@ -4,7 +4,7 @@ title: "[React] 0.시작하기"
 grand_parent: Blog
 parent: react
 permalink: /docs/blog/react/start
-nav_order: 0
+nav_order: 1
 date: 2023-04-07 10:04
 ---
 
