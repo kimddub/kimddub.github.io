@@ -14,7 +14,7 @@ date: 2023-05-16 10:04
 - 유사한 용어로 인가(Authorization)란, API를 호출한 대상이 해당 데이터에 접근할 권한이 있는지 확인하는 절차이다.
 
 ### 필요한 이유
-SPA(Single Page Application) 방식으로 구현된 프로젝트가 아니라면?
+SPA(Single Page Application) 방식으로 구현된 프로젝트가 아니라면? `모놀리식 아키텍처`  
 즉, MPA(Multi Page Application) 방식의 경우 SSR(Server Side Rendering)을 통해 페이지가 모두 랜더링되어 응답된다.
 로그인한 사용자 정보를 서버 단에서 세션에 저장하고 있으며 타인이 API를 호출하여도 로그인 사용자를 식별 가능하다.
 
