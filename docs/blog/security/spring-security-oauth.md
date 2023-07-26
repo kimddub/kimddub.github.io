@@ -11,6 +11,7 @@ date: 2023-05-16 10:04
 ## Spring Security OAuth
 
 ### 개념
+- - - 
 - OAuth(Open Authorization)
   - 위임 `권한` 부여를 위한 표준 프로토콜. 사용자 PW없이도 사용자의 데이터 접근을 허가함.
   - 인증 플로우 2가지
@@ -33,4 +34,7 @@ date: 2023-05-16 10:04
 > 참고: [jakeseo_me님 블로그](https://velog.io/@jakeseo_me/Oauth-2.0%EA%B3%BC-OpenID-Connect-%ED%94%84%EB%A1%9C%ED%86%A0%EC%BD%9C-%EC%A0%95%EB%A6%AC)
 - JWT
   - JWT는 인증 토큰의 종류, OAuth는 토큰을 발급하고 인증하는 오픈 스탠다드 프로토콜
-- Spring Security Fundamentals
+
+### Spring Security Fundamentals
+- - - 
+
