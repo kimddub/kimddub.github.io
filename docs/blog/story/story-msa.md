@@ -3,7 +3,7 @@ layout: default
 title: "프로젝트 개편"
 grand_parent: Blog
 parent: story
-permalink: /docs/blog/story/msa
+permalink: /docs/blog/story/story-msa
 nav_order: 1
 date: 2023-06-09 10:00
 ---
