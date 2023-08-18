@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "프로젝트 설계"
+title: "[설계] DB 설계"
 grand_parent: Blog
 parent: story
 permalink: /docs/blog/story/story-db
