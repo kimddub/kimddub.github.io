@@ -19,7 +19,7 @@ date: 2023-02-13 10:04
 위 기본 클래스들을 구현하여 커스텀 할 수 있으며 다음 항목들을 커스텀한다.
 - 로그인 액션(JWT 생성 + Cookie에 토큰 설정(세션 비활성화) + 리디렉션)
 - 사용자(롤, 권한)
-- 
+
 ### 로그인 액션 커스텀
 ```java
 @Configuration
@@ -216,4 +216,31 @@ export const serviceAxios = axios.create({
   },
   withCredentials: true // 쿠키 유지
 });
+```
+
+## 서버 기타 설정
+- - - 
+### SSL 설정
+- 권한 인증을 쿠키로 진행 할 경우 보안 설정 필수
+- 서브 도메인이 일치하지 않는 경우 다음의 설정 필수
+  - SameSite: None
+  - scure(SSL): true
+- 로컬에서 검증하기 위해 임의 CA 발급
+```shell
+# choco 설치
+
+# mkcert 설치
+choco install mkcert
+
+# openssl 설치
+choco install openssl
+
+# 인증서 생성
+# SSL 설정 필요 프로젝트의 classpath로 이동
+mkcert -install # 최초 한번
+mkcert -key-file key.pem -cert-file cert.pem "*.서브도메인.com" localhost 127.0.0.1 ::1
+openssl pkcs12 -export -in cert.pem -inkey key.pem -out keystore.p12 -name career-api -CAfile C:\...\mkcert\rootCA.pem -caname C:\...\rootCA-key.pem -chain -passout pass:비밀번호
+keytool -importkeystore -srckeystore keystore.p12 -srcstoretype PKCS12 -destkeystore keystore.jks -deststoretype JKS -srcstorepass 비밀번호 -deststorepass 비밀번호
+keytool.exe -import -alias gateway-cert -keystore "C:\Program Files\...\jdk-17.0.2\lib\security\cacerts" -storepass changeit -file "C:\...\resources\cert.pem"
+keytool -v -list -keystore keystore.p12
 ```
